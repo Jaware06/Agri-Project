@@ -12,7 +12,7 @@
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <i class="fa-solid fa-seedling"></i>
+        <i class="fa-solid fa-leaf"></i>
         <div>
           <h1>KisanSetu</h1>
           <p>Empowering Farmers, Enriching Future</p>
@@ -48,7 +48,7 @@
       <div class="hero-actions">
         <div class="search-wrap">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <input id="searchInput" type="text" placeholder="Search crops...">
+          <input id="searchInput" type="text" placeholder="Search crops by name, local name...">
         </div>
         <button id="filterBtn" class="filter-btn"><i class="fa-solid fa-filter"></i> Filters</button>
         <select id="categorySelect" class="hidden-select">
@@ -60,256 +60,516 @@
     <section class="content-grid">
       <aside class="left-panel">
         <div class="stat-box">
-          <h3 id="cropCount">0+</h3>
+          <h3 id="cropCountStr">500+</h3>
           <p>Crops Available</p>
         </div>
+        
         <div class="category-box">
           <h4>Categories</h4>
-          <ul id="categoryList"></ul>
+          <ul id="categoryList">
+            <!-- Categories injected here -->
+          </ul>
         </div>
+        
         <div class="category-box">
           <h4>Popular Searches</h4>
-          <div class="popular-searches" id="popularSearches"></div>
+          <div class="popular-searches" id="popularSearches">
+            <!-- Popular searches injected here -->
+          </div>
         </div>
       </aside>
 
       <section class="main-panel">
-        <h3>Featured Crops</h3>
-        <div id="cropCards" class="crop-cards"></div>
-
-        <div id="cropDetail" class="detail-card hidden">
-          <div class="detail-head">
-            <img id="detailImage" src="" alt="crop image">
-            <div>
-              <h2 id="detailName"></h2>
-              <p id="detailScientific"></p>
-              <p id="detailLocal"></p>
-              <p id="detailFamily"></p>
-              <button class="compare-btn">Add to Compare</button>
-            </div>
+        
+        <!-- ALL CROPS GRID VIEW -->
+        <div id="allCropsView">
+          <div class="section-header">
+            <h3>All Categories <span style="color:#6b7280; font-size:14px; font-weight:normal; margin-left:8px;" id="allCropsSubtitle">All Crops (500+)</span></h3>
           </div>
-
-          <div class="tab-strip">
-            <span class="active">Overview</span>
-            <span>Varieties</span>
-            <span>Growth Cycle</span>
-            <span>Soil & Water Needs</span>
-            <span>Pests & Diseases</span>
-            <span>Nutrient Management</span>
+          <div id="cropCards" class="crop-cards">
+            <!-- Cards injected here -->
           </div>
-
-          <div class="detail-grid">
-            <div class="info-box">
-              <h4>Basic Details</h4>
-              <p><strong>Scientific Name:</strong> <span id="dScientific"></span></p>
-              <p><strong>Local Names:</strong> <span id="dLocal"></span></p>
-              <p><strong>Category:</strong> <span id="dCategory"></span></p>
-              <p><strong>Crop Family:</strong> <span id="dFamily"></span></p>
-            </div>
-
-            <div class="info-box">
-              <h4>Popular Varieties / Hybrids</h4>
-              <ul id="varietiesList"></ul>
-            </div>
-
-            <div class="info-box">
-              <h4>Growth Timeline</h4>
-              <ul id="timelineList"></ul>
-            </div>
-          </div>
-
-          <div class="detail-grid bottom-grid">
-            <div class="info-box">
-              <h4>Soil & Water Needs</h4>
-              <p id="soilWaterText"></p>
-            </div>
-            <div class="info-box">
-              <h4>Pests & Diseases</h4>
-              <p id="pestDiseaseText"></p>
-            </div>
-            <div class="info-box">
-              <h4>Nutrient Management</h4>
-              <p id="nutrientText"></p>
+          
+          <div class="pagination">
+            <div class="pagination-info" id="paginationInfo">Showing 1 to 24 of 500 crops</div>
+            <div class="pagination-controls" id="paginationControls">
+              <!-- Controls injected here -->
             </div>
           </div>
         </div>
+
+        <!-- CROP DETAIL VIEW -->
+        <div id="cropDetailView" class="hidden">
+          <div class="section-header">
+            <h3><i class="fa-solid fa-leaf"></i> Featured Crops</h3>
+          </div>
+          <div id="featuredCropCards" class="crop-cards" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
+            <!-- Featured cards injected here -->
+          </div>
+
+          <div class="detail-view">
+            <div class="detail-left">
+              <img id="detailImage" class="detail-image" src="" alt="crop image">
+              <div class="quick-facts">
+                <h4>Quick Facts</h4>
+                <ul id="quickFactsList">
+                  <li><i class="fa-solid fa-sun"></i> <div><strong>Growing Season:</strong> <span id="qfSeason"></span></div></li>
+                  <li><i class="fa-solid fa-globe"></i> <div><strong>Native Region:</strong> <span id="qfNative"></span></div></li>
+                  <li><i class="fa-solid fa-coins"></i> <div><strong>Economic Importance:</strong> <span id="qfEcon"></span></div></li>
+                  <li><i class="fa-solid fa-droplet"></i> <div><strong>Water Requirement:</strong> <span id="qfWater"></span></div></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="detail-right">
+              <div class="detail-header-top">
+                <div class="detail-title-area">
+                  <h2><span id="detailName"></span> <span id="detailCategory" class="detail-category-tag"></span></h2>
+                  <p class="detail-scientific" id="detailScientific"></p>
+                  <p class="detail-local" id="detailLocal"></p>
+                </div>
+                <button class="compare-btn"><i class="fa-solid fa-scale-balanced"></i> Add to Compare</button>
+              </div>
+
+              <div class="tab-strip" id="tabStrip">
+                <span class="active" data-tab="overview">Overview</span>
+                <span data-tab="varieties">Varieties</span>
+                <span data-tab="growth">Growth Cycle</span>
+                <span data-tab="soil">Soil & Water Needs</span>
+                <span data-tab="pests">Pests & Diseases</span>
+                <span data-tab="nutrient">Nutrient Management</span>
+                <span data-tab="harvest">Harvesting</span>
+              </div>
+
+              <div id="tab-overview" class="tab-content active">
+                <div class="info-box" style="margin-bottom: 16px;">
+                  <h4><i class="fa-solid fa-circle-info"></i> Basic Details</h4>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+                    <div><strong>Scientific Name</strong><br><span id="dScientific"></span></div>
+                    <div><strong>Crop Family</strong><br><span id="dFamily"></span></div>
+                    <div><strong>Local Names</strong><br><span id="dLocal"></span></div>
+                    <div><strong>Type</strong><br><span id="dType"></span></div>
+                  </div>
+                </div>
+                <div class="info-box">
+                  <h4><i class="fa-solid fa-book-open"></i> Overview</h4>
+                  <p id="dOverviewText"></p>
+                </div>
+              </div>
+
+              <div id="tab-varieties" class="tab-content">
+                <div class="info-box">
+                  <h4><i class="fa-solid fa-seedling"></i> Popular Varieties & Hybrids</h4>
+                  <ul id="varietiesList"></ul>
+                </div>
+              </div>
+
+              <div id="tab-growth" class="tab-content">
+                <div class="info-box">
+                  <h4><i class="fa-solid fa-calendar-days"></i> Growth Timeline</h4>
+                  <ul id="timelineList" class="timeline-list"></ul>
+                </div>
+              </div>
+
+              <div id="tab-soil" class="tab-content">
+                <div class="info-box">
+                  <h4><i class="fa-solid fa-droplet"></i> Soil & Water Needs</h4>
+                  <p id="soilWaterText"></p>
+                </div>
+              </div>
+
+              <div id="tab-pests" class="tab-content">
+                <div class="info-box">
+                  <h4><i class="fa-solid fa-bug"></i> Pests & Diseases</h4>
+                  <p id="pestDiseaseText"></p>
+                </div>
+              </div>
+
+              <div id="tab-nutrient" class="tab-content">
+                <div class="info-box">
+                  <h4><i class="fa-solid fa-flask"></i> Nutrient Management</h4>
+                  <p id="nutrientText"></p>
+                </div>
+              </div>
+
+              <div id="tab-harvest" class="tab-content">
+                <div class="info-box">
+                  <h4><i class="fa-solid fa-tractor"></i> Harvesting</h4>
+                  <p id="harvestText"></p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
       </section>
     </section>
   </main>
 
   <script>
+    const allCropsView = document.getElementById("allCropsView");
+    const cropDetailView = document.getElementById("cropDetailView");
     const cropCards = document.getElementById("cropCards");
-    const cropCount = document.getElementById("cropCount");
+    const featuredCropCards = document.getElementById("featuredCropCards");
     const categoryList = document.getElementById("categoryList");
     const searchInput = document.getElementById("searchInput");
     const categorySelect = document.getElementById("categorySelect");
+    const popularSearches = document.getElementById("popularSearches");
+    const cropCountStr = document.getElementById("cropCountStr");
+    
+    // Pagination elements
+    const paginationInfo = document.getElementById("paginationInfo");
+    const paginationControls = document.getElementById("paginationControls");
+    const allCropsSubtitle = document.getElementById("allCropsSubtitle");
 
-    const cropDetail = document.getElementById("cropDetail");
+    // Detail elements
     const detailImage = document.getElementById("detailImage");
     const detailName = document.getElementById("detailName");
+    const detailCategory = document.getElementById("detailCategory");
     const detailScientific = document.getElementById("detailScientific");
     const detailLocal = document.getElementById("detailLocal");
-    const detailFamily = document.getElementById("detailFamily");
+    
+    const qfSeason = document.getElementById("qfSeason");
+    const qfNative = document.getElementById("qfNative");
+    const qfEcon = document.getElementById("qfEcon");
+    const qfWater = document.getElementById("qfWater");
+
     const dScientific = document.getElementById("dScientific");
-    const dLocal = document.getElementById("dLocal");
-    const dCategory = document.getElementById("dCategory");
     const dFamily = document.getElementById("dFamily");
+    const dLocal = document.getElementById("dLocal");
+    const dType = document.getElementById("dType");
+    const dOverviewText = document.getElementById("dOverviewText");
     const varietiesList = document.getElementById("varietiesList");
     const timelineList = document.getElementById("timelineList");
-    const popularSearches = document.getElementById("popularSearches");
-    const filterBtn = document.getElementById("filterBtn");
     const soilWaterText = document.getElementById("soilWaterText");
     const pestDiseaseText = document.getElementById("pestDiseaseText");
     const nutrientText = document.getElementById("nutrientText");
+    const harvestText = document.getElementById("harvestText");
 
     let allCrops = [];
-    let crops = [];
+    let filteredCrops = [];
+    let currentPage = 1;
+    const itemsPerPage = 24;
     const fallbackImage = "https://via.placeholder.com/900x600?text=Crop+Image";
+
+    const categoryIcons = {
+      "Cereals": "fa-wheat-awn",
+      "Pulses": "fa-seedling",
+      "Oilseeds": "fa-droplet",
+      "Fruits": "fa-apple-whole",
+      "Vegetables": "fa-carrot",
+      "Spices": "fa-pepper-hot",
+      "Cash Crops": "fa-sack-dollar",
+      "Plantation": "fa-tree",
+      "Fodder Crops": "fa-leaf",
+      "Fibre Crops": "fa-shirt",
+      "Medicinal & Aromatic": "fa-mortar-pestle",
+      "Floriculture": "fa-fan",
+      "Nuts": "fa-cookie"
+    };
 
     async function fetchCrops() {
       const response = await fetch("/api/crops");
       const data = await response.json();
       allCrops = data.crops || [];
+      cropCountStr.textContent = `${allCrops.length}+`;
       renderCategoryOptions();
       applyFilters();
+      renderCategories();
+      renderPopularSearches();
     }
 
-    function applyFilters() {
-      const selectedCategory = categorySelect.value.trim().toLowerCase();
+    function applyFilters(page = 1) {
+      const selectedCategory = categorySelect.value;
       const searchText = searchInput.value.trim().toLowerCase();
 
-      crops = allCrops.filter((crop) => {
-        const categoryOk = !selectedCategory || (crop.category || "").toLowerCase() === selectedCategory;
+      filteredCrops = allCrops.filter((crop) => {
+        const categoryOk = !selectedCategory || crop.category === selectedCategory;
         const searchPool = `${crop.name || ""} ${crop.local_names || ""} ${crop.scientific_name || ""} ${crop.category || ""}`.toLowerCase();
         const searchOk = !searchText || searchPool.includes(searchText);
         return categoryOk && searchOk;
       });
 
-      renderList();
-      renderCategories();
-      renderPopularSearches();
-      if (crops.length > 0) {
-        showDetail(crops[0].slug);
-      } else {
-        cropDetail.classList.add("hidden");
-      }
+      currentPage = page;
+      showAllCropsView();
+      renderGrid();
+      renderPagination();
+      updateCategoryActiveState(selectedCategory);
     }
 
-    function renderCategoryOptions() {
-      const categories = [...new Set(allCrops.map((crop) => crop.category).filter(Boolean))].sort();
-      categorySelect.innerHTML = `<option value="">All Categories</option>`;
-      categories.forEach((category) => {
-        const option = document.createElement("option");
-        option.value = category;
-        option.textContent = category;
-        categorySelect.appendChild(option);
+    function showAllCropsView() {
+      allCropsView.classList.remove("hidden");
+      cropDetailView.classList.add("hidden");
+    }
+
+    function showDetailView(slug) {
+      allCropsView.classList.add("hidden");
+      cropDetailView.classList.remove("hidden");
+      loadCropDetail(slug);
+      renderFeaturedCrops();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderGrid() {
+      cropCards.innerHTML = "";
+      allCropsSubtitle.textContent = categorySelect.value ? `${categorySelect.value} (${filteredCrops.length})` : `All Crops (${filteredCrops.length})`;
+      
+      const startIdx = (currentPage - 1) * itemsPerPage;
+      const endIdx = startIdx + itemsPerPage;
+      const pageCrops = filteredCrops.slice(startIdx, endIdx);
+
+      if (pageCrops.length === 0) {
+        cropCards.innerHTML = "<p style='grid-column: 1/-1; color: #6b7280;'>No crops found matching your criteria.</p>";
+        return;
+      }
+
+      pageCrops.forEach((crop) => {
+        cropCards.appendChild(createCropCard(crop));
       });
     }
 
-    function renderList() {
-      cropCount.textContent = `${crops.length}+`;
-      cropCards.innerHTML = "";
-
-      crops.forEach((crop) => {
-        const card = document.createElement("article");
-        card.className = "crop-card";
-        card.innerHTML = `
+    function createCropCard(crop) {
+      const card = document.createElement("div");
+      card.className = "crop-card";
+      card.innerHTML = `
+        <div class="card-img-wrap">
           <img src="${crop.image}" alt="${crop.name}" loading="lazy">
-          <div class="card-body">
-            <h4>${crop.name}</h4>
-            <p>${crop.local_names || ""}</p>
-            <span>${crop.category || ""}</span>
-          </div>
-        `;
-        const imageElement = card.querySelector("img");
-        imageElement.addEventListener("error", () => {
-          imageElement.src = fallbackImage;
-        });
-        card.addEventListener("click", () => showDetail(crop.slug));
-        cropCards.appendChild(card);
+          <div class="card-tag"><i class="fa-solid fa-leaf"></i> ${crop.category || "Crop"}</div>
+        </div>
+        <div class="card-body">
+          <h4>${crop.base_crop || crop.name}</h4>
+          <p>${crop.local_names || ""}</p>
+          <span>${crop.category || ""}</span>
+        </div>
+      `;
+      const img = card.querySelector("img");
+      img.onerror = () => img.src = fallbackImage;
+      card.addEventListener("click", () => showDetailView(crop.slug));
+      return card;
+    }
+
+    function renderFeaturedCrops() {
+      featuredCropCards.innerHTML = "";
+      // Grab 4 random or top crops for featured
+      const featured = allCrops.slice(0, 4);
+      featured.forEach(crop => {
+        featuredCropCards.appendChild(createCropCard(crop));
+      });
+    }
+
+    function renderPagination() {
+      const totalPages = Math.ceil(filteredCrops.length / itemsPerPage);
+      paginationControls.innerHTML = "";
+      
+      const startIdx = (currentPage - 1) * itemsPerPage + 1;
+      const endIdx = Math.min(currentPage * itemsPerPage, filteredCrops.length);
+      
+      if (filteredCrops.length === 0) {
+        paginationInfo.textContent = "0 crops";
+        return;
+      }
+      
+      paginationInfo.textContent = `Showing ${startIdx} to ${endIdx} of ${filteredCrops.length} crops`;
+
+      // Prev Button
+      const prevBtn = document.createElement("button");
+      prevBtn.className = "page-btn";
+      prevBtn.innerHTML = "<i class='fa-solid fa-chevron-left'></i> Previous";
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => applyFilters(currentPage - 1);
+      paginationControls.appendChild(prevBtn);
+
+      // Numbered Buttons (simplified logic for demo)
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, startPage + 4);
+      
+      if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        const btn = document.createElement("button");
+        btn.className = `page-btn ${i === currentPage ? "active" : ""}`;
+        btn.textContent = i;
+        btn.onclick = () => applyFilters(i);
+        paginationControls.appendChild(btn);
+      }
+
+      if (endPage < totalPages) {
+        const span = document.createElement("span");
+        span.textContent = "...";
+        span.style.color = "#6b7280";
+        paginationControls.appendChild(span);
+        
+        const lastBtn = document.createElement("button");
+        lastBtn.className = "page-btn";
+        lastBtn.textContent = totalPages;
+        lastBtn.onclick = () => applyFilters(totalPages);
+        paginationControls.appendChild(lastBtn);
+      }
+
+      // Next Button
+      const nextBtn = document.createElement("button");
+      nextBtn.className = "page-btn";
+      nextBtn.innerHTML = "Next <i class='fa-solid fa-chevron-right'></i>";
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.onclick = () => applyFilters(currentPage + 1);
+      paginationControls.appendChild(nextBtn);
+    }
+
+    function renderCategoryOptions() {
+      const categories = [...new Set(allCrops.map((c) => c.category).filter(Boolean))].sort();
+      categorySelect.innerHTML = `<option value="">All Categories</option>`;
+      categories.forEach((cat) => {
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = cat;
+        categorySelect.appendChild(opt);
       });
     }
 
     function renderCategories() {
       const categoryCounts = {};
-      crops.forEach((crop) => {
-        const c = crop.category || "Other";
-        categoryCounts[c] = (categoryCounts[c] || 0) + 1;
+      allCrops.forEach((c) => {
+        const cat = c.category || "Other";
+        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
       });
 
-      categoryList.innerHTML = "";
-      Object.keys(categoryCounts).forEach((cat) => {
+      categoryList.innerHTML = `
+        <li data-cat="" class="active">
+          <span><i class="fa-solid fa-table-cells-large"></i> All Categories</span>
+          <strong>${allCrops.length}</strong>
+        </li>
+      `;
+
+      Object.keys(categoryCounts).sort().forEach((cat) => {
         const li = document.createElement("li");
-        li.innerHTML = `<span>${cat}</span><strong>${categoryCounts[cat]}</strong>`;
+        li.dataset.cat = cat;
+        const icon = categoryIcons[cat] || "fa-leaf";
+        li.innerHTML = `
+          <span><i class="fa-solid ${icon}"></i> ${cat}</span>
+          <strong>${categoryCounts[cat]}</strong>
+        `;
+        li.addEventListener("click", () => {
+          categorySelect.value = cat;
+          applyFilters(1);
+        });
         categoryList.appendChild(li);
+      });
+
+      // Attach click to "All Categories"
+      categoryList.querySelector('li[data-cat=""]').addEventListener("click", () => {
+        categorySelect.value = "";
+        applyFilters(1);
+      });
+    }
+
+    function updateCategoryActiveState(selected) {
+      const items = categoryList.querySelectorAll("li");
+      items.forEach(li => {
+        if (li.dataset.cat === selected) {
+          li.classList.add("active");
+        } else {
+          li.classList.remove("active");
+        }
       });
     }
 
     function renderPopularSearches() {
-      const top = allCrops.slice(0, 8);
+      const tops = ["Rice", "Wheat", "Tomato", "Potato"];
       popularSearches.innerHTML = "";
-      top.forEach((crop) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "search-chip";
-        button.textContent = crop.base_crop || crop.name;
-        button.addEventListener("click", () => {
-          searchInput.value = crop.base_crop || crop.name;
-          applyFilters();
-        });
-        popularSearches.appendChild(button);
+      tops.forEach((term) => {
+        const btn = document.createElement("button");
+        btn.className = "search-chip";
+        btn.textContent = term;
+        btn.onclick = () => {
+          searchInput.value = term;
+          categorySelect.value = "";
+          applyFilters(1);
+        };
+        popularSearches.appendChild(btn);
       });
     }
 
-    async function showDetail(slug) {
-      const response = await fetch(`/api/crops/${slug}`);
-      const data = await response.json();
+    async function loadCropDetail(slug) {
+      const res = await fetch(`/api/crops/${slug}`);
+      const data = await res.json();
       if (!data.ok) return;
 
       const crop = data.crop;
-      cropDetail.classList.remove("hidden");
       detailImage.src = crop.image || fallbackImage;
-      detailImage.onerror = () => {
-        detailImage.src = fallbackImage;
-      };
-      detailName.textContent = crop.name;
+      detailImage.onerror = () => detailImage.src = fallbackImage;
+
+      detailName.textContent = crop.base_crop || crop.name;
+      detailCategory.textContent = crop.category || "";
       detailScientific.textContent = crop.scientific_name || "";
-      detailLocal.textContent = crop.local_names || "";
-      detailFamily.textContent = crop.crop_family ? `Family: ${crop.crop_family}` : "";
+      detailLocal.textContent = (crop.local_names) ? `${crop.local_names}` : "";
+
+      qfSeason.textContent = crop.growing_season || "Kharif";
+      qfNative.textContent = crop.native_region || "Asia";
+      qfEcon.textContent = crop.economic_importance || "High";
+      qfWater.textContent = crop.water_requirement || "High";
+
       dScientific.textContent = crop.scientific_name || "";
-      dLocal.textContent = crop.local_names || "";
-      dCategory.textContent = crop.category || "";
       dFamily.textContent = crop.crop_family || "";
-      soilWaterText.textContent = crop.soil_water || "No soil and water data available.";
-      pestDiseaseText.textContent = crop.pests_diseases || "No pest and disease data available.";
-      nutrientText.textContent = crop.nutrient_management || "No nutrient management data available.";
+      dLocal.textContent = crop.local_names || "";
+      dType.textContent = crop.category || "";
+      dOverviewText.textContent = crop.overview || `${crop.name} is a vital crop.`;
 
       varietiesList.innerHTML = "";
-      (crop.popular_varieties || []).forEach((item) => {
+      (crop.popular_varieties || []).forEach(v => {
         const li = document.createElement("li");
-        li.textContent = item;
+        li.textContent = v;
         varietiesList.appendChild(li);
       });
 
       timelineList.innerHTML = "";
-      (crop.timeline || []).forEach((item) => {
+      (crop.timeline || []).forEach(t => {
         const li = document.createElement("li");
-        li.textContent = item;
+        const parts = t.split(":");
+        if (parts.length === 2) {
+          li.innerHTML = `<span class="timeline-name">${parts[0]}</span> <span class="timeline-duration">${parts[1]}</span>`;
+        } else {
+          li.textContent = t;
+        }
         timelineList.appendChild(li);
       });
+
+      soilWaterText.textContent = crop.soil_water || "No specific soil data.";
+      pestDiseaseText.textContent = crop.pests_diseases || "No specific pest data.";
+      nutrientText.textContent = crop.nutrient_management || "No specific nutrient data.";
+      harvestText.textContent = crop.harvesting || "Harvest carefully at maturity.";
+      
+      // Reset to first tab
+      document.querySelector('.tab-strip span[data-tab="overview"]').click();
     }
 
-    searchInput.addEventListener("input", applyFilters);
-    categorySelect.addEventListener("change", () => {
-      applyFilters();
+    // Tabs functionality
+    document.querySelectorAll('.tab-strip span').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active from all tabs
+        document.querySelectorAll('.tab-strip span').forEach(t => t.classList.remove('active'));
+        // Add active to clicked tab
+        tab.classList.add('active');
+        
+        // Hide all contents
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        // Show target content
+        const targetId = `tab-${tab.dataset.tab}`;
+        document.getElementById(targetId).classList.add('active');
+      });
     });
-    filterBtn.addEventListener("click", () => {
-      const selected = prompt("Enter category (e.g., Vegetables, Fruits, Spices, Oilseeds, Cash Crops):", categorySelect.value || "");
-      if (selected === null) return;
-      const valid = [...categorySelect.options].some((opt) => opt.value.toLowerCase() === selected.trim().toLowerCase());
-      categorySelect.value = valid ? [...categorySelect.options].find((opt) => opt.value.toLowerCase() === selected.trim().toLowerCase()).value : "";
-      applyFilters();
+
+    searchInput.addEventListener("input", () => applyFilters(1));
+    document.getElementById("filterBtn").addEventListener("click", () => {
+      document.getElementById("categorySelect").classList.toggle("hidden-select");
+      // Fallback simple prompt if custom dropdown UI is desired later
     });
+    
+    // Auto-search via select if unhidden
+    categorySelect.addEventListener("change", () => applyFilters(1));
+
     fetchCrops();
   </script>
 </body>

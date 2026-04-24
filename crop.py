@@ -247,11 +247,16 @@ def _seed_records() -> List[Dict[str, Any]]:
                     "scientific_name": base["scientific_name"],
                     "local_names": base["local_names"],
                     "crop_family": base["family"],
+                    "native_region": region,
+                    "economic_importance": "High",
+                    "water_requirement": "Moderate",
+                    "growing_season": season,
                     "basic_details": {
                         "scientific_name": base["scientific_name"],
                         "local_names": base["local_names"],
                         "crop_family": base["family"],
                     },
+                    "overview": f"{base['name']} is widely grown in {region}. It thrives in {climate} climates with {soil}.",
                     "varieties": {
                         "popular_cultivars": [
                             f"{base['name']} Classic",
@@ -303,6 +308,7 @@ def _seed_records() -> List[Dict[str, Any]]:
                     ],
                     "pests_diseases": f"Common issues in {base['name']} include blight, sucking pests, and stem borers depending on local conditions.",
                     "nutrient_management": "Apply balanced NPK and micronutrients based on soil test for consistent yield.",
+                    "harvesting": f"Harvest when leaves turn yellow and moisture drops below 14%. Proper drying is crucial.",
                 }
             )
         variant_index += 1
