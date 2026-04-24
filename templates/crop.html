@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Information Hub - KisanSetu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='crop.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <i class="fa-solid fa-seedling"></i>
+        <div>
+          <h1>KisanSetu</h1>
+          <p>Empowering Farmers, Enriching Future</p>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a class="active" href="{{ url_for('crop') }}">Crops</a>
+        <a href="#">Farming Techniques</a>
+        <a href="#">Market Prices</a>
+        <a href="#">Disease AI</a>
+        <a href="#">Fertilizers</a>
+        <a href="#">Schemes</a>
+      </nav>
+
+      <div class="top-actions">
+        <button class="search-icon" aria-label="search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <div class="profile">{{ initial or "AK" }}</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="title-strip">
+      <div class="title-box">
+        <div class="title-icon"><i class="fa-solid fa-seedling"></i></div>
+        <div>
+          <h2>Crop Information Hub</h2>
+          <p>Explore 500+ crops with detailed growing information</p>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <div class="search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="searchInput" type="text" placeholder="Search crops...">
+        </div>
+        <button id="filterBtn" class="filter-btn"><i class="fa-solid fa-filter"></i> Filters</button>
+        <select id="categorySelect" class="hidden-select">
+          <option value="">All Categories</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <aside class="left-panel">
+        <div class="stat-box">
+          <h3 id="cropCount">0+</h3>
+          <p>Crops Available</p>
+        </div>
+        <div class="category-box">
+          <h4>Categories</h4>
+          <ul id="categoryList"></ul>
+        </div>
+        <div class="category-box">
+          <h4>Popular Searches</h4>
+          <div class="popular-searches" id="popularSearches"></div>
+        </div>
+      </aside>
+
+      <section class="main-panel">
+        <h3>Featured Crops</h3>
+        <div id="cropCards" class="crop-cards"></div>
+
+        <div id="cropDetail" class="detail-card hidden">
+          <div class="detail-head">
+            <img id="detailImage" src="" alt="crop image">
+            <div>
+              <h2 id="detailName"></h2>
+              <p id="detailScientific"></p>
+              <p id="detailLocal"></p>
+              <p id="detailFamily"></p>
+              <button class="compare-btn">Add to Compare</button>
+            </div>
+          </div>
+
+          <div class="tab-strip">
+            <span class="active">Overview</span>
+            <span>Varieties</span>
+            <span>Growth Cycle</span>
+            <span>Soil & Water Needs</span>
+            <span>Pests & Diseases</span>
+            <span>Nutrient Management</span>
+          </div>
+
+          <div class="detail-grid">
+            <div class="info-box">
+              <h4>Basic Details</h4>
+              <p><strong>Scientific Name:</strong> <span id="dScientific"></span></p>
+              <p><strong>Local Names:</strong> <span id="dLocal"></span></p>
+              <p><strong>Category:</strong> <span id="dCategory"></span></p>
+              <p><strong>Crop Family:</strong> <span id="dFamily"></span></p>
+            </div>
+
+            <div class="info-box">
+              <h4>Popular Varieties / Hybrids</h4>
+              <ul id="varietiesList"></ul>
+            </div>
+
+            <div class="info-box">
+              <h4>Growth Timeline</h4>
+              <ul id="timelineList"></ul>
+            </div>
+          </div>
+
+          <div class="detail-grid bottom-grid">
+            <div class="info-box">
+              <h4>Soil & Water Needs</h4>
+              <p id="soilWaterText"></p>
+            </div>
+            <div class="info-box">
+              <h4>Pests & Diseases</h4>
+              <p id="pestDiseaseText"></p>
+            </div>
+            <div class="info-box">
+              <h4>Nutrient Management</h4>
+              <p id="nutrientText"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const cropCards = document.getElementById("cropCards");
+    const cropCount = document.getElementById("cropCount");
+    const categoryList = document.getElementById("categoryList");
+    const searchInput = document.getElementById("searchInput");
+    const categorySelect = document.getElementById("categorySelect");
+
+    const cropDetail = document.getElementById("cropDetail");
+    const detailImage = document.getElementById("detailImage");
+    const detailName = document.getElementById("detailName");
+    const detailScientific = document.getElementById("detailScientific");
+    const detailLocal = document.getElementById("detailLocal");
+    const detailFamily = document.getElementById("detailFamily");
+    const dScientific = document.getElementById("dScientific");
+    const dLocal = document.getElementById("dLocal");
+    const dCategory = document.getElementById("dCategory");
+    const dFamily = document.getElementById("dFamily");
+    const varietiesList = document.getElementById("varietiesList");
+    const timelineList = document.getElementById("timelineList");
+    const popularSearches = document.getElementById("popularSearches");
+    const filterBtn = document.getElementById("filterBtn");
+    const soilWaterText = document.getElementById("soilWaterText");
+    const pestDiseaseText = document.getElementById("pestDiseaseText");
+    const nutrientText = document.getElementById("nutrientText");
+
+    let allCrops = [];
+    let crops = [];
+    const fallbackImage = "https://via.placeholder.com/900x600?text=Crop+Image";
+
+    async function fetchCrops() {
+      const response = await fetch("/api/crops");
+      const data = await response.json();
+      allCrops = data.crops || [];
+      renderCategoryOptions();
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const selectedCategory = categorySelect.value.trim().toLowerCase();
+      const searchText = searchInput.value.trim().toLowerCase();
+
+      crops = allCrops.filter((crop) => {
+        const categoryOk = !selectedCategory || (crop.category || "").toLowerCase() === selectedCategory;
+        const searchPool = `${crop.name || ""} ${crop.local_names || ""} ${crop.scientific_name || ""} ${crop.category || ""}`.toLowerCase();
+        const searchOk = !searchText || searchPool.includes(searchText);
+        return categoryOk && searchOk;
+      });
+
+      renderList();
+      renderCategories();
+      renderPopularSearches();
+      if (crops.length > 0) {
+        showDetail(crops[0].slug);
+      } else {
+        cropDetail.classList.add("hidden");
+      }
+    }
+
+    function renderCategoryOptions() {
+      const categories = [...new Set(allCrops.map((crop) => crop.category).filter(Boolean))].sort();
+      categorySelect.innerHTML = `<option value="">All Categories</option>`;
+      categories.forEach((category) => {
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        categorySelect.appendChild(option);
+      });
+    }
+
+    function renderList() {
+      cropCount.textContent = `${crops.length}+`;
+      cropCards.innerHTML = "";
+
+      crops.forEach((crop) => {
+        const card = document.createElement("article");
+        card.className = "crop-card";
+        card.innerHTML = `
+          <img src="${crop.image}" alt="${crop.name}" loading="lazy">
+          <div class="card-body">
+            <h4>${crop.name}</h4>
+            <p>${crop.local_names || ""}</p>
+            <span>${crop.category || ""}</span>
+          </div>
+        `;
+        const imageElement = card.querySelector("img");
+        imageElement.addEventListener("error", () => {
+          imageElement.src = fallbackImage;
+        });
+        card.addEventListener("click", () => showDetail(crop.slug));
+        cropCards.appendChild(card);
+      });
+    }
+
+    function renderCategories() {
+      const categoryCounts = {};
+      crops.forEach((crop) => {
+        const c = crop.category || "Other";
+        categoryCounts[c] = (categoryCounts[c] || 0) + 1;
+      });
+
+      categoryList.innerHTML = "";
+      Object.keys(categoryCounts).forEach((cat) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span>${cat}</span><strong>${categoryCounts[cat]}</strong>`;
+        categoryList.appendChild(li);
+      });
+    }
+
+    function renderPopularSearches() {
+      const top = allCrops.slice(0, 8);
+      popularSearches.innerHTML = "";
+      top.forEach((crop) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "search-chip";
+        button.textContent = crop.base_crop || crop.name;
+        button.addEventListener("click", () => {
+          searchInput.value = crop.base_crop || crop.name;
+          applyFilters();
+        });
+        popularSearches.appendChild(button);
+      });
+    }
+
+    async function showDetail(slug) {
+      const response = await fetch(`/api/crops/${slug}`);
+      const data = await response.json();
+      if (!data.ok) return;
+
+      const crop = data.crop;
+      cropDetail.classList.remove("hidden");
+      detailImage.src = crop.image || fallbackImage;
+      detailImage.onerror = () => {
+        detailImage.src = fallbackImage;
+      };
+      detailName.textContent = crop.name;
+      detailScientific.textContent = crop.scientific_name || "";
+      detailLocal.textContent = crop.local_names || "";
+      detailFamily.textContent = crop.crop_family ? `Family: ${crop.crop_family}` : "";
+      dScientific.textContent = crop.scientific_name || "";
+      dLocal.textContent = crop.local_names || "";
+      dCategory.textContent = crop.category || "";
+      dFamily.textContent = crop.crop_family || "";
+      soilWaterText.textContent = crop.soil_water || "No soil and water data available.";
+      pestDiseaseText.textContent = crop.pests_diseases || "No pest and disease data available.";
+      nutrientText.textContent = crop.nutrient_management || "No nutrient management data available.";
+
+      varietiesList.innerHTML = "";
+      (crop.popular_varieties || []).forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        varietiesList.appendChild(li);
+      });
+
+      timelineList.innerHTML = "";
+      (crop.timeline || []).forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        timelineList.appendChild(li);
+      });
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    categorySelect.addEventListener("change", () => {
+      applyFilters();
+    });
+    filterBtn.addEventListener("click", () => {
+      const selected = prompt("Enter category (e.g., Vegetables, Fruits, Spices, Oilseeds, Cash Crops):", categorySelect.value || "");
+      if (selected === null) return;
+      const valid = [...categorySelect.options].some((opt) => opt.value.toLowerCase() === selected.trim().toLowerCase());
+      categorySelect.value = valid ? [...categorySelect.options].find((opt) => opt.value.toLowerCase() === selected.trim().toLowerCase()).value : "";
+      applyFilters();
+    });
+    fetchCrops();
+  </script>
+</body>
+</html>

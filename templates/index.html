@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<!-- ✅ FIXED CSS LINK -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KisanSetu - Empowering Farmers</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="topbar">
+  <div class="container nav-wrap">
+
+    <div class="brand">
+      <i class="fa-solid fa-seedling"></i>
+      <div>
+        <h1>KisanSetu</h1>
+        <p>Empowering Farmers, Enriching Future</p>
+      </div>
+    </div>
+
+    <!-- ✅ FIXED ROUTES -->
+    <nav class="main-nav">
+      <a class="active" href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('crop') }}">Crops</a>
+      <a href="#">Farming Techniques</a>
+      <a href="#">Market Prices</a>
+      <a href="#">Disease AI</a>
+      <a href="#">Fertilizers</a>
+      <a href="#">Schemes</a>
+    </nav>
+
+    <!-- ================= NAV ACTIONS ================= -->
+    <div class="nav-actions">
+
+      <button aria-label="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+
+      {% if user %}
+
+        <!-- 👤 INITIALS -->
+        <div class="profile-circle">
+          {{ initial }}
+        </div>
+
+        <a href="{{ url_for('logout') }}" class="btn-login">Logout</a>
+
+      {% else %}
+
+        <a href="{{ url_for('login') }}" class="btn-login">
+          <i class="fa-regular fa-user"></i> Login
+        </a>
+
+        <a href="{{ url_for('signup') }}" class="btn-signup">
+          Sign Up
+        </a>
+
+      {% endif %}
+
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<main>
+
+<section class="hero">
+  <div class="container hero-box">
+    <div class="hero-content">
+      <h2>Supporting Farmers.<br>Building Tomorrow.</h2>
+      <p>Your all-in-one platform for crop knowledge, market insights, tools, and connections.</p>
+
+      <div class="quick-icons">
+        <article><i class="fa-solid fa-leaf"></i><span>Learn</span></article>
+        <article><i class="fa-solid fa-chart-line"></i><span>Grow</span></article>
+        <article><i class="fa-solid fa-users"></i><span>Connect</span></article>
+        <article><i class="fa-solid fa-globe"></i><span>Sustain</span></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CARDS ================= -->
+<section class="container cards cards-five">
+
+  <article class="card">
+    <i class="fa-solid fa-seedling"></i>
+    <h3>Crop Information Hub</h3>
+    <p>Details about crops, growing seasons, soil requirements, and care tips.</p>
+    <a href="{{ url_for('crop') }}">Explore →</a>
+  </article>
+
+  <article class="card">
+    <i class="fa-solid fa-tractor"></i>
+    <h3>Farming Techniques</h3>
+    <p>Modern farming guides.</p>
+    <a href="#">Explore →</a>
+  </article>
+
+  <article class="card">
+    <i class="fa-solid fa-chart-column"></i>
+    <h3>Market Prices</h3>
+    <p>Live crop price updates.</p>
+    <a href="#">Explore →</a>
+  </article>
+
+  <article class="card">
+    <i class="fa-solid fa-bug"></i>
+    <h3>Disease Detector</h3>
+    <p>Detect crop diseases easily.</p>
+    <a href="#">Explore →</a>
+  </article>
+
+  <article class="card">
+    <i class="fa-solid fa-landmark"></i>
+    <h3>Govt Schemes</h3>
+    <p>Subsidies and policies.</p>
+    <a href="#">Explore →</a>
+  </article>
+
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="stats">
+  <div class="container stats-grid">
+    <article><h4>1M+</h4><p>Farmers</p></article>
+    <article><h4>500+</h4><p>Crops</p></article>
+    <article><h4>100+</h4><p>Markets</p></article>
+  </div>
+</footer>
+
+</body>
+</html>
