@@ -33,7 +33,8 @@ def _generate_variants(base_list: List[Dict], count: int) -> List[Dict]:
         "for Arid Regions", "for High Yield", "for Small Farms", "Best Practices",
         "for Vegetables", "for Cereals", "in Tropical Climates", "Advanced Techniques",
         "Fundamentals", "Case Study", "Implementation", "for Orchards", "for Pulses",
-        "Cost-Effective", "for Sloping Lands", "in Monsoons", "Modern Approach"
+        "Cost-Effective", "for Sloping Lands", "in Monsoons", "Modern Approach",
+        "for Export Quality", "Deep Dive", "Quick Guide", "for Beginners"
     ]
     idx = 0
     mod_idx = 0
@@ -95,45 +96,12 @@ def _seed_records() -> List[Dict[str, Any]]:
         {"title": "Smart Irrigation", "category": "Innovative & Emerging", "badge": "Innovative", "description": "Automated irrigation systems.", "image": "https://images.unsplash.com/photo-1563514253381-e2e71887aeb4?auto=format&fit=crop&w=600&q=80"},
     ]
 
-    # Exactly 10 items
-    guides = [
-        {"title": "Soil Testing", "category": "Practical Guides", "description": "How to test and improve soil.", "icon": "fa-vial"},
-        {"title": "Compost Making", "category": "Practical Guides", "description": "Step-by-step compost guide.", "icon": "fa-seedling"},
-        {"title": "Seed Treatment", "category": "Practical Guides", "description": "Protect seeds from diseases.", "icon": "fa-shield-halved"},
-        {"title": "Pest Management", "category": "Practical Guides", "description": "Identify and control pests.", "icon": "fa-bug"},
-        {"title": "Nutrient Management", "category": "Practical Guides", "description": "Balance nutrients for crops.", "icon": "fa-flask"},
-        {"title": "Irrigation Scheduling", "category": "Practical Guides", "description": "When and how to irrigate.", "icon": "fa-droplet"},
-        {"title": "Harvesting Guide", "category": "Practical Guides", "description": "Right time and methods.", "icon": "fa-tractor"},
-        {"title": "Post-harvest Handling", "category": "Practical Guides", "description": "Store and reduce losses.", "icon": "fa-box-open"},
-        {"title": "Record Keeping", "category": "Practical Guides", "description": "Maintain farm records.", "icon": "fa-clipboard-list"},
-        {"title": "Cost-benefit Analysis", "category": "Practical Guides", "description": "Compare inputs vs output.", "icon": "fa-chart-pie"}
-    ]
-    for g in guides:
-        g["type"] = "icon"
-
-    # Exactly 10 items
-    support = [
-        {"title": "Training Modules", "category": "Farmer Support", "description": "Videos, infographics & workshops.", "icon": "fa-chalkboard-user"},
-        {"title": "Government Schemes", "category": "Farmer Support", "description": "Subsidies for adopting new techniques.", "icon": "fa-building-columns"},
-        {"title": "Community Sharing", "category": "Farmer Support", "description": "Forums and farmer networks.", "icon": "fa-comments"},
-        {"title": "Expert Consultation", "category": "Farmer Support", "description": "Ask experts & get solutions.", "icon": "fa-user-tie"},
-        {"title": "Weather Updates", "category": "Farmer Support", "description": "Local weather & advisories.", "icon": "fa-cloud-sun-rain"},
-        {"title": "Market Linkages", "category": "Farmer Support", "description": "Connect to buyers & markets.", "icon": "fa-store"},
-        {"title": "Helpline Support", "category": "Farmer Support", "description": "24/7 farmer helpline.", "icon": "fa-headset"},
-        {"title": "Success Stories", "category": "Farmer Support", "description": "Learn from other farmers.", "icon": "fa-trophy"},
-        {"title": "Resource Directory", "category": "Farmer Support", "description": "Find seeds, tools, suppliers.", "icon": "fa-address-book"},
-        {"title": "Farm Webinars", "category": "Farmer Support", "description": "Online learning events.", "icon": "fa-laptop-code"}
-    ]
-    for s in support:
-        s["type"] = "icon"
-
     techniques = []
-    techniques.extend(_generate_variants(traditional_base, 20))
-    techniques.extend(_generate_variants(modern_base, 20))
-    techniques.extend(_generate_variants(sustainable_base, 20))
-    techniques.extend(_generate_variants(innovative_base, 20))
-    techniques.extend(guides)
-    techniques.extend(support)
+    # 25 per category = 100 total
+    techniques.extend(_generate_variants(traditional_base, 25))
+    techniques.extend(_generate_variants(modern_base, 25))
+    techniques.extend(_generate_variants(sustainable_base, 25))
+    techniques.extend(_generate_variants(innovative_base, 25))
 
     records: List[Dict[str, Any]] = []
     for item in techniques:

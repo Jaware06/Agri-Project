@@ -130,9 +130,7 @@
       "Traditional Techniques": "fa-seedling",
       "Modern & Mechanized": "fa-tractor",
       "Sustainable & Eco-Friendly": "fa-earth-americas",
-      "Innovative & Emerging": "fa-flask",
-      "Practical Guides": "fa-clipboard-list",
-      "Farmer Support": "fa-users-viewfinder"
+      "Innovative & Emerging": "fa-flask"
     };
 
     // Icons for sidebar
@@ -140,9 +138,7 @@
       "Traditional Techniques": "fa-tree",
       "Modern & Mechanized": "fa-gear",
       "Sustainable & Eco-Friendly": "fa-leaf",
-      "Innovative & Emerging": "fa-lightbulb",
-      "Practical Guides": "fa-book",
-      "Farmer Support": "fa-users"
+      "Innovative & Emerging": "fa-lightbulb"
     };
 
     async function fetchTechniques() {
@@ -165,9 +161,7 @@
         "Traditional Techniques",
         "Modern & Mechanized",
         "Sustainable & Eco-Friendly",
-        "Innovative & Emerging",
-        "Practical Guides",
-        "Farmer Support"
+        "Innovative & Emerging"
       ];
 
       // Update Quick Stats & Footer
@@ -204,43 +198,23 @@
       wrapper.className = "tech-section";
       wrapper.dataset.cat = title;
 
-      let innerContent = "";
-
-      if(title === "Practical Guides" || title === "Farmer Support") {
-        // Icon grid
-        innerContent = `
-          <div class="icon-cards-grid">
-            ${items.map(item => `
-              <div class="icon-card">
-                <div class="ic-icon"><i class="fa-solid ${item.icon || 'fa-book'}"></i></div>
-                <div class="ic-content">
-                  <h4>${item.title}</h4>
-                  <p>${item.description}</p>
-                </div>
+      // Display 4 cards for UI aesthetics, but state total items length
+      const displayItems = items.slice(0, 4);
+      
+      let innerContent = `
+        <div class="cards-grid-4">
+          ${displayItems.map(item => `
+            <div class="horizontal-card">
+              <img src="${item.image}" alt="${item.title}" class="hc-img" loading="lazy">
+              <div class="hc-content">
+                <h4>${item.title}</h4>
+                <p>${item.description}</p>
+                <span class="card-badge">${item.badge}</span>
               </div>
-            `).join("")}
-          </div>
-        `;
-      } else {
-        // Horizontal cards (images)
-        // Show max 4 cards for a clean grid as per mockup, even if there are 20
-        const displayItems = items.slice(0, 4);
-        
-        innerContent = `
-          <div class="cards-grid-4">
-            ${displayItems.map(item => `
-              <div class="horizontal-card">
-                <img src="${item.image}" alt="${item.title}" class="hc-img" loading="lazy">
-                <div class="hc-content">
-                  <h4>${item.title}</h4>
-                  <p>${item.description}</p>
-                  <span class="card-badge">${item.badge}</span>
-                </div>
-              </div>
-            `).join("")}
-          </div>
-        `;
-      }
+            </div>
+          `).join("")}
+        </div>
+      `;
 
       wrapper.innerHTML = `
         <div class="section-head">
