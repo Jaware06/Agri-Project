@@ -76,22 +76,22 @@
             <div class="stat-item">
               <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
               <div class="stat-text">
-                <strong>20+</strong>
+                <strong id="qsTotal">0</strong>
                 <span>Farming Techniques</span>
               </div>
             </div>
             <div class="stat-item">
               <div class="stat-icon"><i class="fa-solid fa-book-open-reader"></i></div>
               <div class="stat-text">
-                <strong>Step-by-step</strong>
-                <span>Guides & Manuals</span>
+                <strong id="qsCats">0</strong>
+                <span>Categories</span>
               </div>
             </div>
             <div class="stat-item">
               <div class="stat-icon"><i class="fa-solid fa-check-double"></i></div>
               <div class="stat-text">
-                <strong>Expert</strong>
-                <span>Verified Content</span>
+                <strong>100%</strong>
+                <span>Expert Verified</span>
               </div>
             </div>
             <div class="stat-item">
@@ -106,24 +106,33 @@
       </aside>
 
       <!-- Main Content -->
-      <section class="main-panel" id="mainPanel">
-        <!-- Sections will be injected here via JS -->
+      <section class="main-panel">
+        <div id="mainContent">
+           <!-- Sections will be injected here via JS -->
+        </div>
+
+        <div class="farming-footer">
+          <i class="fa-solid fa-seedling"></i> <span id="footerText">Total: 0 Techniques Across 0 Categories</span>
+        </div>
       </section>
     </div>
   </main>
 
   <script>
     const categoryList = document.getElementById("categoryList");
-    const mainPanel = document.getElementById("mainPanel");
+    const mainContent = document.getElementById("mainContent");
+    const qsTotal = document.getElementById("qsTotal");
+    const qsCats = document.getElementById("qsCats");
+    const footerText = document.getElementById("footerText");
 
     // Icons for sections header
     const sectionIcons = {
       "Traditional Techniques": "fa-seedling",
       "Modern & Mechanized": "fa-tractor",
       "Sustainable & Eco-Friendly": "fa-earth-americas",
-      "Innovative & Emerging": "fa-microscope",
+      "Innovative & Emerging": "fa-flask",
       "Practical Guides": "fa-clipboard-list",
-      "Farmer Support": "fa-handshake-angle"
+      "Farmer Support": "fa-users-viewfinder"
     };
 
     // Icons for sidebar
@@ -152,20 +161,23 @@
         grouped[t.category].push(t);
       });
 
-      // Categories to render in order
-      const orderedCategories = [
+      const categories = [
         "Traditional Techniques",
         "Modern & Mechanized",
         "Sustainable & Eco-Friendly",
-        "Innovative & Emerging"
+        "Innovative & Emerging",
+        "Practical Guides",
+        "Farmer Support"
       ];
 
-      const splitCategories = ["Practical Guides", "Farmer Support"];
+      // Update Quick Stats & Footer
+      qsTotal.textContent = techniques.length;
+      qsCats.textContent = categories.length;
+      footerText.textContent = `Total: ${techniques.length} Techniques Across ${categories.length} Categories`;
 
       // 1. Render Sidebar
-      const allCats = [...orderedCategories, ...splitCategories];
       categoryList.innerHTML = "";
-      allCats.forEach(cat => {
+      categories.forEach(cat => {
         const count = grouped[cat] ? grouped[cat].length : 0;
         const icon = sidebarIcons[cat] || "fa-leaf";
         const li = document.createElement("li");
@@ -177,91 +189,69 @@
       });
 
       // 2. Render Main Panel
-      mainPanel.innerHTML = "";
+      mainContent.innerHTML = "";
 
-      // Render standard full-width sections
-      orderedCategories.forEach(cat => {
+      categories.forEach(cat => {
         if(grouped[cat]) {
           const section = createSection(cat, grouped[cat], sectionIcons[cat]);
-          mainPanel.appendChild(section);
+          mainContent.appendChild(section);
         }
       });
-
-      // Render bottom split sections (Guides & Support)
-      const splitContainer = document.createElement("div");
-      splitContainer.className = "split-sections";
-
-      splitCategories.forEach(cat => {
-        if(grouped[cat]) {
-          const section = createIconSection(cat, grouped[cat], sectionIcons[cat]);
-          splitContainer.appendChild(section);
-        }
-      });
-      
-      mainPanel.appendChild(splitContainer);
     }
 
     function createSection(title, items, iconClass) {
       const wrapper = document.createElement("div");
       wrapper.className = "tech-section";
+      wrapper.dataset.cat = title;
 
-      // HTML for 4 items -> cards-grid-4, else cards-row (3 items)
-      const gridClass = items.length === 4 ? "cards-grid-4" : "cards-row";
+      let innerContent = "";
 
-      let cardsHtml = items.map(item => `
-        <div class="horizontal-card">
-          <img src="${item.image}" alt="${item.title}" class="hc-img" loading="lazy">
-          <div class="hc-content">
-            <h4>${item.title}</h4>
-            <p>${item.description}</p>
-            <button class="hc-btn">Learn More</button>
+      if(title === "Practical Guides" || title === "Farmer Support") {
+        // Icon grid
+        innerContent = `
+          <div class="icon-cards-grid">
+            ${items.map(item => `
+              <div class="icon-card">
+                <div class="ic-icon"><i class="fa-solid ${item.icon || 'fa-book'}"></i></div>
+                <div class="ic-content">
+                  <h4>${item.title}</h4>
+                  <p>${item.description}</p>
+                </div>
+              </div>
+            `).join("")}
           </div>
-        </div>
-      `).join("");
+        `;
+      } else {
+        // Horizontal cards (images)
+        // Show max 4 cards for a clean grid as per mockup, even if there are 20
+        const displayItems = items.slice(0, 4);
+        
+        innerContent = `
+          <div class="cards-grid-4">
+            ${displayItems.map(item => `
+              <div class="horizontal-card">
+                <img src="${item.image}" alt="${item.title}" class="hc-img" loading="lazy">
+                <div class="hc-content">
+                  <h4>${item.title}</h4>
+                  <p>${item.description}</p>
+                  <span class="card-badge">${item.badge}</span>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
 
       wrapper.innerHTML = `
         <div class="section-head">
           <h3><i class="fa-solid ${iconClass || 'fa-seedling'}"></i> ${title}</h3>
-          <a href="#" class="view-all">View All <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-        <div class="${gridClass}">
-          ${cardsHtml}
-        </div>
-      `;
-      return wrapper;
-    }
-
-    function createIconSection(title, items, iconClass) {
-      const wrapper = document.createElement("div");
-      wrapper.className = "tech-section";
-
-      let cardsHtml = items.map(item => `
-        <div class="icon-card">
-          <div class="ic-icon"><i class="fa-solid ${item.icon || 'fa-book'}"></i></div>
-          <div class="ic-content">
-            <h4>${item.title}</h4>
-            <p>${item.description}</p>
+          <div class="head-right">
+            <span class="tech-count">${items.length} Techniques</span>
+            <a href="#" class="view-all">View All <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
-      `).join("");
-
-      wrapper.innerHTML = `
-        <div class="section-head">
-          <h3 style="font-size: 16px; color:#d97706;"><i class="fa-solid ${iconClass || 'fa-book'}"></i> ${title}</h3>
-          <a href="#" class="view-all" style="color:#d97706;">View All <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:12px;">
-          ${cardsHtml}
-        </div>
+        ${innerContent}
       `;
-      
-      if(title === "Farmer Support") {
-         const h3 = wrapper.querySelector("h3");
-         const a = wrapper.querySelector("a");
-         h3.style.color = "#2563eb"; // Blue for farmer support
-         a.style.color = "#2563eb";
-      }
-
       return wrapper;
     }
 

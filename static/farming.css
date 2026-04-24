@@ -1,4 +1,4 @@
-/* farming.css - Reusing some base styles from crop.css where appropriate, but focused on Farming Hub */
+/* farming.css - Updated for 100 techniques and new layout features */
 
 * {
   box-sizing: border-box;
@@ -11,9 +11,7 @@ body {
   color: #1f2937;
 }
 
-/* Common Header Styles imported from crop.css via common class names, assuming they share the topbar */
-/* For independence, here are the core structures */
-
+/* Common wrapper */
 .page-wrap {
   max-width: 1400px;
   margin: 0 auto;
@@ -116,7 +114,7 @@ body {
   gap: 16px;
 }
 
-/* Sidebar Categories */
+/* Sidebar */
 .sidebar-box {
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -177,15 +175,15 @@ body {
 
 .category-list li strong {
   background: #f3f4f6;
-  color: #6b7280;
+  color: #11753b;
   border-radius: 999px;
   padding: 2px 8px;
   font-size: 12px;
+  font-weight: 700;
 }
 
 .category-list li.active strong {
   background: #dcfce7;
-  color: #16a34a;
 }
 
 /* Quick Stats */
@@ -218,8 +216,9 @@ body {
 }
 
 .stat-text strong {
-  color: #111827;
-  font-size: 14px;
+  color: #11753b;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .stat-text span {
@@ -227,7 +226,7 @@ body {
   font-size: 13px;
 }
 
-/* Main Panel Sections */
+/* Main Panel */
 .main-panel {
   display: flex;
   flex-direction: column;
@@ -260,29 +259,44 @@ body {
   gap: 8px;
 }
 
+.head-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tech-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: #11753b;
+}
+
 .view-all {
-  color: #16a34a;
+  color: #6b7280;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 6px;
+  transition: color 0.2s;
 }
 
 .view-all:hover {
-  text-decoration: underline;
+  color: #111827;
 }
 
-/* Horizontal Cards Layout */
-.cards-row {
+/* Horizontal Cards */
+.cards-grid-4 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
-.cards-grid-4 {
-  grid-template-columns: repeat(4, 1fr);
+.cards-grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
 }
 
 .horizontal-card {
@@ -293,6 +307,7 @@ body {
   flex-direction: column;
   transition: transform 0.2s, box-shadow 0.2s;
   background: #fff;
+  height: 100%;
 }
 
 .horizontal-card:hover {
@@ -315,46 +330,47 @@ body {
 
 .hc-content h4 {
   margin: 0 0 6px;
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 700;
   color: #111827;
 }
 
 .hc-content p {
   margin: 0 0 12px;
   color: #6b7280;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.4;
   flex: 1;
 }
 
-.hc-btn {
+.card-badge {
   align-self: flex-start;
   background: #fff;
   border: 1px solid #d1d5db;
   color: #11753b;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
+  padding: 2px 8px;
+  border-radius: 4px;
 }
 
-.hc-btn:hover {
-  background: #f0fdf4;
-  border-color: #b8e2c9;
+/* Icon Cards */
+.icon-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
 }
 
-/* Icon Cards for Practical Guides / Farmer Support */
 .icon-card {
   border: 1px solid #e5e7eb;
   border-radius: 10px;
-  padding: 16px;
+  padding: 12px;
   display: flex;
-  align-items: center;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 12px;
   background: #fff;
   transition: all 0.2s;
+  height: 100%;
 }
 
 .icon-card:hover {
@@ -363,58 +379,75 @@ body {
 }
 
 .ic-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
   background: #f3fbf6;
   color: #11753b;
   display: grid;
   place-items: center;
-  font-size: 20px;
+  font-size: 18px;
   flex-shrink: 0;
-}
-
-.ic-content {
-  flex: 1;
 }
 
 .ic-content h4 {
   margin: 0 0 4px;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 700;
   color: #111827;
 }
 
 .ic-content p {
   margin: 0;
   color: #6b7280;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.4;
 }
 
-/* Split Section for Guides & Support */
-.split-sections {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+/* Farmer Support section overrides */
+.tech-section[data-cat="Farmer Support"] .section-head h3,
+.tech-section[data-cat="Farmer Support"] .tech-count {
+  color: #2563eb;
+}
+.tech-section[data-cat="Farmer Support"] .ic-icon {
+  background: #eff6ff;
+  color: #2563eb;
 }
 
-@media (max-width: 1024px) {
-  .farming-grid {
-    grid-template-columns: 1fr;
-  }
-  .cards-row {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .cards-grid-4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .split-sections {
-    grid-template-columns: 1fr;
-  }
+/* Practical Guides overrides */
+.tech-section[data-cat="Practical Guides"] .section-head h3,
+.tech-section[data-cat="Practical Guides"] .tech-count {
+  color: #d97706;
+}
+.tech-section[data-cat="Practical Guides"] .ic-icon {
+  background: #fffbeb;
+  color: #d97706;
 }
 
-@media (max-width: 640px) {
-  .cards-row, .cards-grid-4 {
-    grid-template-columns: 1fr;
-  }
+/* Grand Total Footer */
+.farming-footer {
+  text-align: center;
+  padding: 24px 0;
+  margin-top: 24px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #11753b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .cards-grid-4 { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .farming-grid { grid-template-columns: 1fr; }
+  .cards-grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .cards-grid-4 { grid-template-columns: 1fr; }
 }

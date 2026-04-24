@@ -27,161 +27,113 @@ def _slugify(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
 
 
-def _seed_records() -> List[Dict[str, Any]]:
-    # Define techniques as seen in mockup
-    techniques = [
-        # Traditional Techniques
-        {
-            "title": "Crop Rotation",
-            "category": "Traditional Techniques",
-            "description": "Benefits for soil fertility and pest control.",
-            "image": "https://images.unsplash.com/photo-1595841696677-6489ff3f8cd1?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-        {
-            "title": "Mixed Cropping & Intercropping",
-            "category": "Traditional Techniques",
-            "description": "Growing multiple crops together for resilience.",
-            "image": "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-        {
-            "title": "Shifting Cultivation",
-            "category": "Traditional Techniques",
-            "description": "Historical practices and modern adaptations.",
-            "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-
-        # Modern & Mechanized
-        {
-            "title": "Precision Farming",
-            "category": "Modern & Mechanized",
-            "description": "Use of GPS, sensors, and drones for targeted input application.",
-            "image": "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-        {
-            "title": "Mechanization",
-            "category": "Modern & Mechanized",
-            "description": "Tractors, harvesters, planters, and irrigation systems.",
-            "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-        {
-            "title": "Hydroponics & Aeroponics",
-            "category": "Modern & Mechanized",
-            "description": "Soil-less farming methods for higher productivity.",
-            "image": "https://images.unsplash.com/photo-1585860956976-58c0c05df756?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-
-        # Sustainable & Eco-Friendly
-        {
-            "title": "Organic Farming",
-            "category": "Sustainable & Eco-Friendly",
-            "description": "Composting, biofertilizers, natural pest control.",
-            "image": "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-        {
-            "title": "Agroforestry",
-            "category": "Sustainable & Eco-Friendly",
-            "description": "Integrating trees with crops for biodiversity and soil health.",
-            "image": "https://images.unsplash.com/photo-1501084817091-a4f3d1d19e07?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-        {
-            "title": "Conservation Tillage",
-            "category": "Sustainable & Eco-Friendly",
-            "description": "Reducing soil disturbance to preserve moisture and carbon.",
-            "image": "https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-        {
-            "title": "Water-saving Methods",
-            "category": "Sustainable & Eco-Friendly",
-            "description": "Drip irrigation, rainwater harvesting for efficient water use.",
-            "image": "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-
-        # Innovative & Emerging
-        {
-            "title": "Vertical Farming",
-            "category": "Innovative & Emerging",
-            "description": "Urban and space-efficient food production.",
-            "image": "https://images.unsplash.com/photo-1530836369250-ef71a3f5e481?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-        {
-            "title": "Genetically Improved Seeds",
-            "category": "Innovative & Emerging",
-            "description": "Drought-resistant, pest-resistant varieties.",
-            "image": "https://images.unsplash.com/photo-1628189874795-09bd2925b3ea?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-        {
-            "title": "Climate-smart Agriculture",
-            "category": "Innovative & Emerging",
-            "description": "Practices adapted to changing weather patterns.",
-            "image": "https://images.unsplash.com/photo-1585860956976-58c0c05df756?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-        {
-            "title": "Smart Farming Tools",
-            "category": "Innovative & Emerging",
-            "description": "AI, IoT, and mobile apps for monitoring and decision-making.",
-            "image": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb0?auto=format&fit=crop&w=600&q=80",
-            "type": "image"
-        },
-
-        # Practical Guides
-        {
-            "title": "Step-by-step Manuals",
-            "category": "Practical Guides",
-            "description": "How to implement each technique.",
-            "icon": "fa-clipboard-list",
-            "type": "icon"
-        },
-        {
-            "title": "Cost-benefit Analysis",
-            "category": "Practical Guides",
-            "description": "Comparing traditional vs modern methods.",
-            "icon": "fa-chart-line",
-            "type": "icon"
-        },
-        {
-            "title": "Case Studies",
-            "category": "Practical Guides",
-            "description": "Success stories from different regions.",
-            "icon": "fa-map-location-dot",
-            "type": "icon"
-        },
-
-        # Farmer Support
-        {
-            "title": "Training Modules",
-            "category": "Farmer Support",
-            "description": "Videos, infographics, and workshops.",
-            "icon": "fa-person-chalkboard",
-            "type": "icon"
-        },
-        {
-            "title": "Government Schemes",
-            "category": "Farmer Support",
-            "description": "Subsidies for adopting new techniques.",
-            "icon": "fa-building-columns",
-            "type": "icon"
-        },
-        {
-            "title": "Community Sharing",
-            "category": "Farmer Support",
-            "description": "Forums and farmer networks.",
-            "icon": "fa-users-viewfinder",
-            "type": "icon"
-        }
+def _generate_variants(base_list: List[Dict], count: int) -> List[Dict]:
+    variants = []
+    modifiers = [
+        "for Arid Regions", "for High Yield", "for Small Farms", "Best Practices",
+        "for Vegetables", "for Cereals", "in Tropical Climates", "Advanced Techniques",
+        "Fundamentals", "Case Study", "Implementation", "for Orchards", "for Pulses",
+        "Cost-Effective", "for Sloping Lands", "in Monsoons", "Modern Approach"
     ]
+    idx = 0
+    mod_idx = 0
+    while len(variants) < count:
+        base = base_list[idx % len(base_list)]
+        mod = modifiers[mod_idx % len(modifiers)]
+        
+        # the first time we add a base item, we just use its normal name
+        if len(variants) < len(base_list):
+            title = base["title"]
+        else:
+            title = f"{base['title']} {mod}"
+            
+        variants.append({
+            "title": title,
+            "category": base["category"],
+            "description": base["description"],
+            "image": base["image"],
+            "badge": base["badge"],
+            "type": "image"
+        })
+        idx += 1
+        if idx % len(base_list) == 0:
+            mod_idx += 1
+            
+    return variants
+
+
+def _seed_records() -> List[Dict[str, Any]]:
+    traditional_base = [
+        {"title": "Crop Rotation", "category": "Traditional Techniques", "badge": "Traditional", "description": "Benefits for soil fertility and pest control.", "image": "https://images.unsplash.com/photo-1595841696677-6489ff3f8cd1?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Mixed Cropping", "category": "Traditional Techniques", "badge": "Traditional", "description": "Growing multiple crops together.", "image": "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Intercropping", "category": "Traditional Techniques", "badge": "Traditional", "description": "Improves yield and reduces pests.", "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Terrace Farming", "category": "Traditional Techniques", "badge": "Traditional", "description": "Efficient on hilly terrains.", "image": "https://images.unsplash.com/photo-1500076656116-558758c991c1?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Shifting Cultivation", "category": "Traditional Techniques", "badge": "Traditional", "description": "Historical practice and adaptation.", "image": "https://images.unsplash.com/photo-1505501869818-471a4f0270a6?auto=format&fit=crop&w=600&q=80"},
+    ]
+
+    modern_base = [
+        {"title": "Precision Farming", "category": "Modern & Mechanized", "badge": "Modern", "description": "Use of GPS, sensors, and drones.", "image": "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Mechanization", "category": "Modern & Mechanized", "badge": "Modern", "description": "Tractors, harvesters & planters.", "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Laser Land Leveling", "category": "Modern & Mechanized", "badge": "Modern", "description": "Ensures uniform water distribution.", "image": "https://images.unsplash.com/photo-1628189874795-09bd2925b3ea?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Hydroponics", "category": "Modern & Mechanized", "badge": "Modern", "description": "Soilless farming in water.", "image": "https://images.unsplash.com/photo-1585860956976-58c0c05df756?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Aeroponics", "category": "Modern & Mechanized", "badge": "Modern", "description": "Plants grow in mist environment.", "image": "https://images.unsplash.com/photo-1530836369250-ef71a3f5e481?auto=format&fit=crop&w=600&q=80"},
+    ]
+
+    sustainable_base = [
+        {"title": "Organic Farming", "category": "Sustainable & Eco-Friendly", "badge": "Sustainable", "description": "Avoids chemicals, uses natural inputs.", "image": "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Agroforestry", "category": "Sustainable & Eco-Friendly", "badge": "Sustainable", "description": "Trees + crops for biodiversity.", "image": "https://images.unsplash.com/photo-1501084817091-a4f3d1d19e07?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Conservation Tillage", "category": "Sustainable & Eco-Friendly", "badge": "Sustainable", "description": "Minimal soil disturbance.", "image": "https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Mulching", "category": "Sustainable & Eco-Friendly", "badge": "Sustainable", "description": "Retains moisture and controls weeds.", "image": "https://images.unsplash.com/photo-1582845663673-f963a8a3ee26?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Rainwater Harvesting", "category": "Sustainable & Eco-Friendly", "badge": "Sustainable", "description": "Collects rainwater for use.", "image": "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=600&q=80"},
+    ]
+
+    innovative_base = [
+        {"title": "Vertical Farming", "category": "Innovative & Emerging", "badge": "Innovative", "description": "Grow crops in stacked layers.", "image": "https://images.unsplash.com/photo-1530836369250-ef71a3f5e481?auto=format&fit=crop&w=600&q=80"},
+        {"title": "IoT in Farming", "category": "Innovative & Emerging", "badge": "Innovative", "description": "Smart sensors for real-time data.", "image": "https://images.unsplash.com/photo-1532629345422-7515f3d16bb0?auto=format&fit=crop&w=600&q=80"},
+        {"title": "AI-based Advisory", "category": "Innovative & Emerging", "badge": "Innovative", "description": "AI insights for better decisions.", "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Drones for Spraying", "category": "Innovative & Emerging", "badge": "Innovative", "description": "Efficient and precise spraying.", "image": "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?auto=format&fit=crop&w=600&q=80"},
+        {"title": "Smart Irrigation", "category": "Innovative & Emerging", "badge": "Innovative", "description": "Automated irrigation systems.", "image": "https://images.unsplash.com/photo-1563514253381-e2e71887aeb4?auto=format&fit=crop&w=600&q=80"},
+    ]
+
+    # Exactly 10 items
+    guides = [
+        {"title": "Soil Testing", "category": "Practical Guides", "description": "How to test and improve soil.", "icon": "fa-vial"},
+        {"title": "Compost Making", "category": "Practical Guides", "description": "Step-by-step compost guide.", "icon": "fa-seedling"},
+        {"title": "Seed Treatment", "category": "Practical Guides", "description": "Protect seeds from diseases.", "icon": "fa-shield-halved"},
+        {"title": "Pest Management", "category": "Practical Guides", "description": "Identify and control pests.", "icon": "fa-bug"},
+        {"title": "Nutrient Management", "category": "Practical Guides", "description": "Balance nutrients for crops.", "icon": "fa-flask"},
+        {"title": "Irrigation Scheduling", "category": "Practical Guides", "description": "When and how to irrigate.", "icon": "fa-droplet"},
+        {"title": "Harvesting Guide", "category": "Practical Guides", "description": "Right time and methods.", "icon": "fa-tractor"},
+        {"title": "Post-harvest Handling", "category": "Practical Guides", "description": "Store and reduce losses.", "icon": "fa-box-open"},
+        {"title": "Record Keeping", "category": "Practical Guides", "description": "Maintain farm records.", "icon": "fa-clipboard-list"},
+        {"title": "Cost-benefit Analysis", "category": "Practical Guides", "description": "Compare inputs vs output.", "icon": "fa-chart-pie"}
+    ]
+    for g in guides:
+        g["type"] = "icon"
+
+    # Exactly 10 items
+    support = [
+        {"title": "Training Modules", "category": "Farmer Support", "description": "Videos, infographics & workshops.", "icon": "fa-chalkboard-user"},
+        {"title": "Government Schemes", "category": "Farmer Support", "description": "Subsidies for adopting new techniques.", "icon": "fa-building-columns"},
+        {"title": "Community Sharing", "category": "Farmer Support", "description": "Forums and farmer networks.", "icon": "fa-comments"},
+        {"title": "Expert Consultation", "category": "Farmer Support", "description": "Ask experts & get solutions.", "icon": "fa-user-tie"},
+        {"title": "Weather Updates", "category": "Farmer Support", "description": "Local weather & advisories.", "icon": "fa-cloud-sun-rain"},
+        {"title": "Market Linkages", "category": "Farmer Support", "description": "Connect to buyers & markets.", "icon": "fa-store"},
+        {"title": "Helpline Support", "category": "Farmer Support", "description": "24/7 farmer helpline.", "icon": "fa-headset"},
+        {"title": "Success Stories", "category": "Farmer Support", "description": "Learn from other farmers.", "icon": "fa-trophy"},
+        {"title": "Resource Directory", "category": "Farmer Support", "description": "Find seeds, tools, suppliers.", "icon": "fa-address-book"},
+        {"title": "Farm Webinars", "category": "Farmer Support", "description": "Online learning events.", "icon": "fa-laptop-code"}
+    ]
+    for s in support:
+        s["type"] = "icon"
+
+    techniques = []
+    techniques.extend(_generate_variants(traditional_base, 20))
+    techniques.extend(_generate_variants(modern_base, 20))
+    techniques.extend(_generate_variants(sustainable_base, 20))
+    techniques.extend(_generate_variants(innovative_base, 20))
+    techniques.extend(guides)
+    techniques.extend(support)
 
     records: List[Dict[str, Any]] = []
     for item in techniques:
