@@ -9,23 +9,22 @@ BASE_DIR = Path(__file__).resolve().parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
+# ✅ ONLY crop-related imports
 from crop import get_crop_by_slug, get_crops, get_db, seed_crop_data
-from farming import seed_farming_data, get_techniques
 
 load_dotenv()
 
 app = Flask(__name__)
 
-# ✅ Secret Key Fix
+# Secret Key
 app.secret_key = os.getenv("SECRET_KEY") or "supersecretkey123"
 
+# MongoDB Setup
 try:
     db = get_db()
     users_collection = db["users"]
     seed_crop_data()
-    seed_farming_data()
     print("MongoDB connected successfully")
-
 except Exception as e:
     print("MongoDB connection failed:", e)
     users_collection = None
@@ -45,6 +44,8 @@ def index():
 
     return render_template('index.html', user=user, initial=initial)
 
+
+# ---------- AUTH ---------- #
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -94,51 +95,48 @@ def signup():
     return render_template('signup.html')
 
 
+# ---------- CROP PAGE ---------- #
+
 @app.route('/crop')
 def crop():
     if 'user' not in session:
         return redirect(url_for('login'))
+
     name = session.get('name')
     initial = ""
+
     if name:
         words = name.split()
         initial = "".join([w[0].upper() for w in words[:2]])
-    return render_template('crop.html', user=session.get('user'), initial=initial)
+
+    return render_template(
+        'crop.html',
+        user=session.get('user'),
+        initial=initial
+    )
 
 
 @app.route('/api/crops')
 def api_crops():
     category = request.args.get('category')
     search = request.args.get('search')
+
     data = get_crops(category=category, search=search, limit=600)
+
     return jsonify({"ok": True, "crops": data})
 
 
 @app.route('/api/crops/<slug>')
 def api_crop_detail(slug):
     crop_item = get_crop_by_slug(slug)
+
     if not crop_item:
         return jsonify({"ok": False, "message": "Crop not found"}), 404
+
     return jsonify({"ok": True, "crop": crop_item})
 
 
-@app.route('/farming')
-def farming():
-    if 'user' not in session:
-        return redirect(url_for('login'))
-    name = session.get('name')
-    initial = ""
-    if name:
-        words = name.split()
-        initial = "".join([w[0].upper() for w in words[:2]])
-    return render_template('farming.html', user=session.get('user'), initial=initial)
-
-
-@app.route('/api/farming')
-def api_farming():
-    data = get_techniques()
-    return jsonify({"ok": True, "techniques": data})
-
+# ---------- LOGOUT ---------- #
 
 @app.route('/logout')
 def logout():
