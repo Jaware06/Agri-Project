@@ -1,0 +1,45 @@
+<header class="topbar">
+  <div class="container nav-wrap">
+    <div class="brand">
+      <i class="fa-solid fa-seedling"></i>
+      <div>
+        <h1>KisanSetu</h1>
+        <p>Empowering Farmers, Enriching Future</p>
+      </div>
+    </div>
+
+    <button class="mobile-menu-btn" id="mobileMenuBtn" style="display: none;"><i class="fa-solid fa-bars"></i></button>
+    <nav class="main-nav">
+      <a class="{% if active_page == 'index' %}active{% endif %}" href="{{ url_for('index') }}">Home</a>
+      <a class="{% if active_page == 'crop' %}active{% endif %}" href="{{ url_for('crop') }}">Crops</a>
+      <a class="{% if active_page == 'farming' %}active{% endif %}" href="{{ url_for('farming') }}">Farming Techniques</a>
+      <a class="{% if active_page == 'market' %}active{% endif %}" href="{{ url_for('market') }}">Market Prices</a>
+      <a class="{% if active_page == 'disease' %}active{% endif %}" href="{{ url_for('disease') }}">Disease Directory</a>
+      <a class="{% if active_page == 'fertilizer' %}active{% endif %}" href="{{ url_for('fertilizer') }}">Fertilizers</a>
+      <a class="{% if active_page == 'scheme' %}active{% endif %}" href="{{ url_for('scheme') }}">Schemes</a>
+    </nav>
+
+    <div class="nav-actions">
+      {% if user %}
+        <div class="profile-circle">{{ initial }}</div>
+        <a href="{{ url_for('logout') }}" class="btn-login" style="margin-left: 10px;">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="btn-login"><i class="fa-regular fa-user"></i> Login</a>
+        <a href="{{ url_for('signup') }}" class="btn-signup">Sign Up</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navWrap = document.querySelector('.nav-wrap');
+    if (mobileMenuBtn && navWrap) {
+      mobileMenuBtn.addEventListener('click', () => {
+        navWrap.classList.toggle('nav-active');
+      });
+    }
+  });
+</script>
+

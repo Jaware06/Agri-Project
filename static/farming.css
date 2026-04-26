@@ -386,3 +386,18 @@ body {
     margin: 4px 4px 4px 0; 
     color: #334155;
 }
+
+@media (max-width: 768px) {
+  .farming-header, .farming-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .header-actions, .search-box {
+    width: 100%;
+  }
+  .hero-stat {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

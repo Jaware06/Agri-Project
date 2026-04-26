@@ -364,13 +364,43 @@ body {
 }
 
 @media (max-width: 860px) {
+  .mobile-menu-btn {
+    display: block !important;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: var(--green-900);
+    cursor: pointer;
+  }
+
   .nav-wrap {
-    grid-template-columns: 1fr;
-    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    flex-wrap: wrap;
   }
 
   .main-nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+  }
+
+  .nav-actions {
+    display: none;
+    width: 100%;
     justify-content: flex-start;
+    padding-top: 10px;
+    padding-bottom: 15px;
+  }
+
+  .nav-wrap.nav-active .main-nav,
+  .nav-wrap.nav-active .nav-actions {
+    display: flex;
   }
 
   .hero-box {
@@ -576,13 +606,43 @@ body {
 }
 
 @media (max-width: 860px) {
+  .mobile-menu-btn {
+    display: block !important;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: var(--green-900);
+    cursor: pointer;
+  }
+
   .nav-wrap {
-    grid-template-columns: 1fr;
-    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    flex-wrap: wrap;
   }
 
   .main-nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+  }
+
+  .nav-actions {
+    display: none;
+    width: 100%;
     justify-content: flex-start;
+    padding-top: 10px;
+    padding-bottom: 15px;
+  }
+
+  .nav-wrap.nav-active .main-nav,
+  .nav-wrap.nav-active .nav-actions {
+    display: flex;
   }
 
   .hero-box {
@@ -798,13 +858,43 @@ body {
 }
 
 @media (max-width: 860px) {
+  .mobile-menu-btn {
+    display: block !important;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: var(--green-900);
+    cursor: pointer;
+  }
+
   .nav-wrap {
-    grid-template-columns: 1fr;
-    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    flex-wrap: wrap;
   }
 
   .main-nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+  }
+
+  .nav-actions {
+    display: none;
+    width: 100%;
     justify-content: flex-start;
+    padding-top: 10px;
+    padding-bottom: 15px;
+  }
+
+  .nav-wrap.nav-active .main-nav,
+  .nav-wrap.nav-active .nav-actions {
+    display: flex;
   }
 
   .hero-box {

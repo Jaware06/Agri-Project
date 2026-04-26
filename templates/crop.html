@@ -6,41 +6,12 @@
   <title>Crop Information Hub - KisanSetu</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='crop.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=6">
+  <link rel="stylesheet" href="{{ url_for('static', filename='crop.css') }}?v=6">
 </head>
 <body>
-  <header class="topbar">
-    <div class="container nav-wrap">
-      <div class="brand">
-        <i class="fa-solid fa-seedling"></i>
-        <div>
-          <h1>KisanSetu</h1>
-          <p>Empowering Farmers, Enriching Future</p>
-        </div>
-      </div>
-
-            <nav class="main-nav">
-        <a  href="{{ url_for('index') }}">Home</a>
-        <a class="active" href="{{ url_for('crop') }}">Crops</a>
-        <a  href="{{ url_for('farming') }}">Farming Techniques</a>
-        <a  href="{{ url_for('market') }}">Market Prices</a>
-        <a  href="{{ url_for('disease') }}">Disease Directory</a>
-        <a  href="{{ url_for('fertilizer') }}">Fertilizers</a>
-        <a  href="{{ url_for('scheme') }}">Schemes</a>
-      </nav>
-
-      <div class="nav-actions">
-
-        {% if user %}
-          <div class="profile-circle">{{ initial }}</div>
-          <a href="{{ url_for('logout') }}" class="btn-login" style="margin-left: 10px;">Logout</a>
-        {% else %}
-          <a href="{{ url_for('login') }}" class="btn-login"><i class="fa-regular fa-user"></i> Login</a>
-          <a href="{{ url_for('signup') }}" class="btn-signup">Sign Up</a>
-        {% endif %}
-      </div>
-    </div>
-  </header>
+  {% set active_page = 'crop' %}
+{% include 'navbar.html' %}
 
   <main class="page-wrap">
     <section class="title-strip">

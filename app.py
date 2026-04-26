@@ -37,17 +37,22 @@ except Exception as e:
 
 # ---------------- ROUTES ---------------- #
 
-@app.route('/')
-def index():
+@app.context_processor
+def inject_user():
     user = session.get('user')
     name = session.get('name')
-
     initial = ""
     if name:
         words = name.split()
-        initial = "".join([w[0].upper() for w in words])
+        initial = "".join([w[0].upper() for w in words[:2]])
+    return dict(user=user, initial=initial)
 
-    return render_template('index.html', user=user, initial=initial)
+@app.route('/')
+def index():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    return render_template('index.html')
 
 
 # ---------- AUTH ---------- #
@@ -107,14 +112,7 @@ def crop():
     if 'user' not in session:
         return redirect(url_for('login'))
 
-    name = session.get('name')
-    initial = ""
-
-    if name:
-        words = name.split()
-        initial = "".join([w[0].upper() for w in words[:2]])
-
-    return render_template('crop.html', user=session.get('user'), initial=initial)
+    return render_template('crop.html')
 
 
 @app.route('/api/crops')
@@ -177,6 +175,31 @@ def farming():
 @app.route('/api/diseases')
 def api_diseases():
     return jsonify(get_all_diseases())
+
+@app.route('/api/market')
+def api_market():
+    crop = request.args.get('crop')
+    state = request.args.get('state')
+    market = request.args.get('market')
+    data = get_market_prices(crop=crop, state=state, market=market)
+    return jsonify(data)
+
+@app.route('/api/fertilizers')
+def api_fertilizers():
+    f_type = request.args.get('type')
+    nutrient = request.args.get('nutrient')
+    form = request.args.get('form')
+    brand = request.args.get('brand')
+    data = get_fertilizers(f_type=f_type, nutrient=nutrient, form=form, brand=brand)
+    return jsonify(data)
+
+@app.route('/api/chat/fertilizer', methods=['POST'])
+def api_chat_fertilizer():
+    data = request.get_json() or {}
+    message = data.get('message', '')
+    return jsonify({
+        "reply": f"Based on expert knowledge, here is a general recommendation regarding your query: '{message}'. Always refer to the product label for exact dosage instructions."
+    })
 
 
 @app.route('/logout')

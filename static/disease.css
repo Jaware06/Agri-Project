@@ -487,3 +487,12 @@ body {
 .side-stat.critical strong {
   color: #ef4444;
 }
+@media (max-width: 768px) {
+  .disease-header, .disease-hero, .disease-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .disease-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -12,36 +12,8 @@
 </head>
 <body>
 
-<header class="topbar">
-  <div class="container nav-wrap">
-    <div class="brand">
-      <i class="fa-solid fa-seedling"></i>
-      <div>
-        <h1>KisanSetu</h1>
-        <p>Empowering Farmers, Enriching Future</p>
-      </div>
-    </div>
-          <nav class="main-nav">
-        <a  href="{{ url_for('index') }}">Home</a>
-        <a  href="{{ url_for('crop') }}">Crops</a>
-        <a class="active" href="{{ url_for('farming') }}">Farming Techniques</a>
-        <a  href="{{ url_for('market') }}">Market Prices</a>
-        <a  href="{{ url_for('disease') }}">Disease Directory</a>
-        <a  href="{{ url_for('fertilizer') }}">Fertilizers</a>
-        <a  href="{{ url_for('scheme') }}">Schemes</a>
-      </nav>
-    <div class="nav-actions">
-
-      {% if user %}
-        <div class="profile-circle">{{ initial }}</div>
-        <a href="{{ url_for('logout') }}" class="btn-login" style="margin-left: 10px;">Logout</a>
-      {% else %}
-        <a href="{{ url_for('login') }}" class="btn-login"><i class="fa-regular fa-user"></i> Login</a>
-        <a href="{{ url_for('signup') }}" class="btn-signup">Sign Up</a>
-      {% endif %}
-    </div>
-  </div>
-</header>
+{% set active_page = 'farming' %}
+{% include 'navbar.html' %}
 
 <main class="farming-layout">
     <!-- Header -->
@@ -52,9 +24,6 @@
                 <i class="fa-solid fa-search"></i>
                 <input type="text" id="techSearch" onkeyup="filterTech()" placeholder="Search techniques...">
             </div>
-            <button class="filter-btn" style="border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; background: #fff; color: var(--primary); font-weight: 500;">
-                <i class="fa-solid fa-filter"></i> Filter <i class="fa-solid fa-chevron-down" style="font-size: 12px;"></i>
-            </button>
         </div>
     </div>
 
