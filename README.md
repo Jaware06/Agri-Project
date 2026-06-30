@@ -1,5 +1,6 @@
 # KisanSetu
-Website made for Farmers.
+
+Agri product:Website made for Farmers.
 
 
 # KisanSetu
@@ -160,4 +161,8 @@ http://127.0.0.1:5000
   
 B.Tech Computer Engineering Student
 
+<<<<<<< HEAD
 This project is developed to support digital agriculture and help farmers access important agricultural information easily.
+=======
+This project is developed to support digital agriculture and help farmers access important agricultural information easily.
+>>>>>>> e316dfed12e2028cff16bc646aa1d89edb084d6c
